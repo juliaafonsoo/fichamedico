@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-"""Extract CPF numbers from DOCX files in the current directory.
-
-The CPF (Cadastro de Pessoas Físicas) can appear in two formats:
-    - ``XXX.XXX.XXX-YY`` (with punctuation)
-    - ``XXXXXXXXXXX`` (11 continuous digits)
-
-This script scans every ``.docx`` file in the repository directory and prints the
-file name followed by any CPF numbers found within that file.
-"""
 
 from __future__ import annotations
 
@@ -15,19 +5,13 @@ import glob
 import re
 from pathlib import Path
 from typing import Iterable, List
-
 from docx import Document
 
 CPF_PATTERN = re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b|\b\d{11}\b")
-
-
 def _extract_text_from_doc(path: Path) -> str:
-    """Return the full text content of a DOCX file.
 
-    Text is collected from paragraphs and table cells to maximise coverage of the
-    document contents.
-    """
-
+    doc = Document(str(path))
+    parts: List[str] = []
     doc = Document(str(path))
     parts: List[str] = []
 
